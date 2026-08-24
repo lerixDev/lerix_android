@@ -5,8 +5,8 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.firebase.messaging.FirebaseMessaging
 import com.lerix.sdk.LerixApiException
+import com.lerix.sdk.LerixFirebase
 import com.lerix.sdk.LerixBackend
 import com.lerix.sdk.LerixInit
 import com.lerix.sdk.LerixKeys
@@ -74,7 +74,7 @@ object LerixNotifications {
         if (!granted) return false
 
         try {
-            val token = FirebaseMessaging.getInstance().token.await()
+            val token = LerixFirebase.messaging().token.await()
             setDeviceToken(token)
         } catch (e: Exception) {
             if (LerixKeys.debug) println("[Lerix] Failed to fetch FCM token: $e")
