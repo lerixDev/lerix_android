@@ -122,6 +122,20 @@ I/O, so it's persisted to disk and reported on the *next* launch, tagged
   no shared/bundled Atelerix Firebase project that can stand in for this;
   each Atelerix project must use its own.
 
+  This was tried two ways and confirmed not to work, so don't re-attempt
+  either without new information: (1) a hardcoded shared Firebase project
+  baked into the SDK — real-device tested, fails with `SenderId mismatch`
+  since the backend always sends via the per-project service account, never
+  a shared one; (2) fetching this project's real Sender ID from the backend
+  (`GET /plugin/notifications/sender-id`) and constructing `FirebaseOptions`
+  with it plus a placeholder API key — real-device tested, fails with
+  `FIS_AUTH_ERROR` because modern `firebase-messaging` always goes through
+  Firebase Installations Service, which requires a genuinely valid,
+  project-authorized API key to create an installation at all. The backend
+  only stores the service account (server-side admin credentials with no
+  API key field), not a client API key, so there's nothing valid to fetch.
+  A real `google-services.json` is the only way to get a real one.
+
 ## Notes
 
 - Device/user identity is stored via `EncryptedSharedPreferences`
