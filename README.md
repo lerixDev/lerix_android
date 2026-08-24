@@ -21,10 +21,9 @@ dependencies {
 }
 ```
 
-Your app must also apply Firebase — add the Google Services plugin and your
-project's `google-services.json` if you want push notifications working;
-everything else (registration, error reporting, crash capture) works
-without Firebase configured at all.
+Push notifications need Firebase configured — see **Requirements** below.
+Everything else (registration, error reporting, crash capture) works with
+zero Firebase setup.
 
 ## Setup
 
@@ -105,9 +104,23 @@ I/O, so it's persisted to disk and reported on the *next* launch, tagged
 
 - Android 7.0+ (API 24)
 - Kotlin 1.9+, AGP 8.5+
-- A Firebase project (for push notifications only) with `google-services.json`
-  applied to your app module, and its server key uploaded to the Atelerix
-  dashboard under **Notifications → Settings**
+- For push notifications, **the same Firebase project** needs two separate
+  artifacts uploaded to two separate places — they're different files for
+  different halves of the pipeline, and both are required:
+  1. **`google-services.json`** (Firebase Console → Project Settings →
+     General → your Android app) — applied to your **app module** (via the
+     Google Services Gradle plugin, already wired into this repo's example
+     module) so the client can actually register with your project and mint
+     a token.
+  2. **A service account key** (Firebase Console → Project Settings →
+     Service Accounts → Generate new private key) — uploaded to the
+     **Atelerix dashboard**, under this project's **Notifications →
+     Settings**, so the backend can authenticate as your Firebase project
+     to send.
+  A token minted under a different Firebase project than the one whose
+  service account is on file fails with FCM's `SenderId mismatch` — there's
+  no shared/bundled Atelerix Firebase project that can stand in for this;
+  each Atelerix project must use its own.
 
 ## Notes
 
