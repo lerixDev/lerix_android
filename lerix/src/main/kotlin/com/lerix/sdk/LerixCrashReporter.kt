@@ -8,22 +8,12 @@ import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
 
-/**
- * Automatic crash capture: install once, and any uncaught exception on any
- * thread gets reported on the *next* launch without the app having to call
- * anything itself.
- *
- * A crash handler can't reliably make a network call — the process is
- * about to die — so this only ever does a synchronous file write at crash
- * time, then reports it normally once the app restarts.
- */
 internal object LerixCrashReporter {
     private const val PENDING_CRASH_FILE = "lerix_pending_crash.json"
     private var installed = false
 
     private fun pendingCrashFile(): File = File(LerixKeys.appContext.cacheDir, PENDING_CRASH_FILE)
 
-    /** Call once during `Lerix.initialize()`. Safe to call more than once — later calls are no-ops. */
     fun install() {
         if (installed) return
         installed = true
@@ -33,7 +23,6 @@ internal object LerixCrashReporter {
             try {
                 persistCrash(throwable)
             } catch (e: Exception) {
-                // Never let the crash reporter itself block the real crash.
             }
             previousHandler?.uncaughtException(thread, throwable)
         }
@@ -51,7 +40,6 @@ internal object LerixCrashReporter {
         pendingCrashFile().writeText(payload.toString())
     }
 
-    /** Call once at startup (after registration) to report and clear any crash captured during a previous run. */
     suspend fun reportPendingCrashIfAny() {
         val file = pendingCrashFile()
         if (!file.exists()) return

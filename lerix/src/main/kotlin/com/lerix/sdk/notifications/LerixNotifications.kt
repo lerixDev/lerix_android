@@ -5,9 +5,9 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.firebase.messaging.FirebaseMessaging
 import com.lerix.sdk.LerixApiException
 import com.lerix.sdk.LerixBackend
+import com.lerix.sdk.LerixFirebase
 import com.lerix.sdk.LerixInit
 import com.lerix.sdk.LerixKeys
 import com.lerix.sdk.LerixRoute
@@ -16,11 +16,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 enum class LerixPermissionStatus { AUTHORIZED, DENIED, NOT_DETERMINED }
 
-/** Native push-notification manager, backed by Firebase Cloud Messaging. */
 object LerixNotifications {
     private const val DEVICE_TOKEN_KEY = "lerix_device_token"
     private const val REGISTERED_TOKEN_ID_KEY = "lerix_registered_token_id"
@@ -42,7 +41,6 @@ object LerixNotifications {
         }
     }
 
-    /** For a tap that launched the app cold, before a handler was set. */
     fun getInitialNotificationTap(): LerixNotificationPayload? {
         val tap = pendingTap
         pendingTap = null
@@ -62,7 +60,6 @@ object LerixNotifications {
         }
     }
 
-    /** Requests notification permission (Android 13+) and registers the FCM token. */
     suspend fun requestPermissions(): Boolean {
         val context = LerixKeys.appContext
         val granted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -74,7 +71,10 @@ object LerixNotifications {
         if (!granted) return false
 
         try {
-            val token = FirebaseMessaging.getInstance().token.await()
+            val messaging = LerixFirebase.messaging()
+            val token = withContext(Dispatchers.IO) {
+                com.google.android.gms.tasks.Tasks.await(messaging.token)
+            }
             setDeviceToken(token)
         } catch (e: Exception) {
             if (LerixKeys.debug) println("[Lerix] Failed to fetch FCM token: $e")
@@ -83,12 +83,6 @@ object LerixNotifications {
         return true
     }
 
-    /**
-     * Android 13+ requires an explicit runtime permission request via
-     * `ActivityCompat.requestPermissions` from an Activity — call this
-     * first if `checkPermissionStatus()` returns `NOT_DETERMINED`, then
-     * call `requestPermissions()` once the user responds.
-     */
     fun requestNotificationPermissionLauncher(activity: android.app.Activity, requestCode: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), requestCode)
@@ -107,7 +101,6 @@ object LerixNotifications {
         }
     }
 
-    /** Called by `LerixFirebaseMessagingService.onNewToken` and by `requestPermissions()`. */
     internal fun setDeviceToken(token: String) {
         LerixKeys.deviceToken = token
         LerixSecureStorage.write(LerixKeys.appContext, DEVICE_TOKEN_KEY, token)
@@ -127,11 +120,6 @@ object LerixNotifications {
         return stored
     }
 
-    /**
-     * The device's `Settings.Secure.ANDROID_ID` — a local Android system
-     * identifier, unrelated to Atelerix's backend. **Not** what the
-     * dashboard's send flow expects; see `getRegisteredTokenId()`.
-     */
     fun getDeviceId(): String = com.lerix.sdk.LerixDeviceInfo.deviceId()
 
     fun clearToken() {
@@ -140,12 +128,6 @@ object LerixNotifications {
         LerixSecureStorage.delete(LerixKeys.appContext, REGISTERED_TOKEN_ID_KEY)
     }
 
-    /**
-     * The `notifications_users_tokens.id` row-id the backend assigned when
-     * this device's token was registered — this, not the user id or the
-     * device id, is what the dashboard's "send notification" feature
-     * expects in its `deviceTokens` field.
-     */
     fun getRegisteredTokenId(): String? = LerixSecureStorage.read(LerixKeys.appContext, REGISTERED_TOKEN_ID_KEY)
 
     suspend fun subscribeToTopic(topic: String) {

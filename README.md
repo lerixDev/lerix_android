@@ -7,19 +7,33 @@ app/device registration, error/crash reporting, and push notifications
 
 ## Install
 
-Add the `:lerix` module to your project (published artifact coming later —
-for now, include it as a local/composite build):
+Published via [JitPack](https://jitpack.io/#lerix/lerix-android), built directly
+from this repo's tagged releases — no separate publishing step required
+beyond tagging a release on GitHub.
+
+Add the JitPack repository in `settings.gradle.kts`:
 
 ```kotlin settings.gradle.kts
-include(":lerix")
-project(":lerix").projectDir = File("../lerix_android/lerix")
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+}
 ```
+
+Then add the dependency in `app/build.gradle.kts`:
 
 ```kotlin app/build.gradle.kts
 dependencies {
-    implementation(project(":lerix"))
+    implementation("com.github.lerix.lerix-android:lerix:1.0.0")
 }
 ```
+
+Replace `1.0.0` with the Git tag (or commit hash) you want to pin to — see
+the [releases page](https://github.com/lerix/lerix-android/releases) for
+available versions.
 
 Push notifications need Firebase configured — see **Requirements** below.
 Everything else (registration, error reporting, crash capture) works with
@@ -104,37 +118,26 @@ I/O, so it's persisted to disk and reported on the *next* launch, tagged
 
 - Android 7.0+ (API 24)
 - Kotlin 1.9+, AGP 8.5+
-- For push notifications, **the same Firebase project** needs two separate
-  artifacts uploaded to two separate places — they're different files for
-  different halves of the pipeline, and both are required:
-  1. **`google-services.json`** (Firebase Console → Project Settings →
-     General → your Android app) — applied to your **app module** (via the
-     Google Services Gradle plugin, already wired into this repo's example
-     module) so the client can actually register with your project and mint
-     a token.
-  2. **A service account key** (Firebase Console → Project Settings →
-     Service Accounts → Generate new private key) — uploaded to the
-     **Atelerix dashboard**, under this project's **Notifications →
-     Settings**, so the backend can authenticate as your Firebase project
-     to send.
-  A token minted under a different Firebase project than the one whose
-  service account is on file fails with FCM's `SenderId mismatch` — there's
-  no shared/bundled Atelerix Firebase project that can stand in for this;
-  each Atelerix project must use its own.
-
-  This was tried two ways and confirmed not to work, so don't re-attempt
-  either without new information: (1) a hardcoded shared Firebase project
-  baked into the SDK — real-device tested, fails with `SenderId mismatch`
-  since the backend always sends via the per-project service account, never
-  a shared one; (2) fetching this project's real Sender ID from the backend
-  (`GET /plugin/notifications/sender-id`) and constructing `FirebaseOptions`
-  with it plus a placeholder API key — real-device tested, fails with
-  `FIS_AUTH_ERROR` because modern `firebase-messaging` always goes through
-  Firebase Installations Service, which requires a genuinely valid,
-  project-authorized API key to create an installation at all. The backend
-  only stores the service account (server-side admin credentials with no
-  API key field), not a client API key, so there's nothing valid to fetch.
-  A real `google-services.json` is the only way to get a real one.
+- For push notifications, **no `google-services.json` and no Google
+  Services Gradle plugin are required** — matching the Flutter plugin's
+  approach exactly. The SDK lazily creates a secondary, *named* `FirebaseApp`
+  (`LERIX_FCM_APP`, see `LerixFirebase.kt`) using Atelerix's own shared
+  Firebase project (`atelerix-44685`), with this Atelerix project's real
+  Sender ID fetched dynamically from the backend
+  (`GET /plugin/notifications/sender-id`) layered in via `setGcmSenderId()`
+  for delivery routing — the `projectId`/`applicationId`/`apiKey` are a
+  fixed, hardcoded triple that must be used verbatim (they're a real,
+  registered Firebase app; a synthesized `applicationId` — even one that
+  looks more internally consistent — isn't registered and gets rejected by
+  Firebase Installations with a `403 PERMISSION_DENIED`/`FIS_AUTH_ERROR`,
+  confirmed via real side-by-side device testing against the Flutter
+  plugin).
+  For the backend to actually *send* to devices, upload your Firebase
+  project's own **service account key** (Firebase Console → Project
+  Settings → Service Accounts → Generate new private key) to the
+  **Atelerix dashboard**, under this project's **Notifications →
+  Settings** — this is unrelated to the client-side setup above and is
+  the only Firebase-related step a developer needs to take.
 
 ## Notes
 

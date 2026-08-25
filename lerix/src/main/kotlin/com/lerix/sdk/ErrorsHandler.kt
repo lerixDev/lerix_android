@@ -3,7 +3,6 @@ package com.lerix.sdk
 import com.lerix.sdk.models.BugSeverity
 import com.lerix.sdk.models.BugType
 
-/** Reports errors/crashes to the backend, including retry-on-"user not registered" logic. */
 internal object ErrorsHandler {
     private const val USER_NOT_REGISTERED_CODE = "USER_PROJECT_NOT_EXIST"
     private const val MAX_RETRY_ATTEMPTS = 3

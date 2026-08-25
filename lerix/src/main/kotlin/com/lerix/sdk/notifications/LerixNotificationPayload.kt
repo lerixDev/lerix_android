@@ -1,6 +1,5 @@
 package com.lerix.sdk.notifications
 
-/** The payload handed to `onNotificationReceived`/`onNotificationTapped`. */
 data class LerixNotificationPayload(
     val notificationId: String?,
     val title: String?,

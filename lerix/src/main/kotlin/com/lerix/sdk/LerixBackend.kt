@@ -9,11 +9,6 @@ import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
 
-/**
- * A backend route — mirrors the `atelerix-api` gateway's controller paths
- * (`:projectId/plugin/...`). `path` excludes the project slug; it's
- * prefixed automatically from `LerixKeys.projectId`.
- */
 internal data class LerixRoute(val method: String, val path: String) {
     companion object {
         val PING = LerixRoute("GET", "plugin/init/ping")
@@ -21,6 +16,7 @@ internal data class LerixRoute(val method: String, val path: String) {
         val DELETE_USER = LerixRoute("DELETE", "plugin/init/user")
         val SEND_BUG = LerixRoute("POST", "plugin/bugs/create")
         val REGISTER_TOKEN = LerixRoute("POST", "plugin/notifications/register-token")
+        val SENDER_ID = LerixRoute("GET", "plugin/notifications/sender-id")
         val SUBSCRIBE_TOPIC = LerixRoute("POST", "plugin/notifications/subscribe-topic")
         val UNSUBSCRIBE_TOPIC = LerixRoute("POST", "plugin/notifications/unsubscribe-topic")
     }
@@ -28,17 +24,6 @@ internal data class LerixRoute(val method: String, val path: String) {
 
 internal class LerixApiException(val code: String, message: String) : Exception(message)
 
-/**
- * HTTP client. Every request carries the `atelerix-key` header and is
- * scoped under `/{projectId}/...` automatically; callers only supply the
- * route, body, and any extra headers (e.g. `app-user`).
- *
- * The gateway in front of `api.atelerix.dev` proxies the real backend's
- * response body as-is but does NOT propagate its HTTP status — a logical
- * failure can still arrive wrapped in a 200/201. The only reliable failure
- * signal is an `error` key in the JSON body, so that's what's checked here
- * instead of the transport status.
- */
 internal object LerixBackend {
     suspend fun get(
         route: LerixRoute,
@@ -66,7 +51,6 @@ internal object LerixBackend {
             requestMethod = route.method
             setRequestProperty("content-type", "application/json")
             setRequestProperty("accept", "application/json")
-            // Header name is mandated by the backend — do not rename.
             setRequestProperty("atelerix-key", LerixKeys.apiKey)
             headers.forEach { (key, value) -> setRequestProperty(key, value) }
             connectTimeout = 15_000

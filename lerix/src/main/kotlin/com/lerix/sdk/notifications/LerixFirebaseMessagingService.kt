@@ -17,11 +17,6 @@ import com.google.firebase.messaging.RemoteMessage
 import com.lerix.sdk.LerixKeys
 import java.net.URL
 
-/**
- * Bundled in the SDK's own manifest, so apps don't need to subclass or
- * declare anything themselves — mirrors how push registration/reception is
- * automatic on iOS once `AppDelegate` forwards the two system callbacks.
- */
 class LerixFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         LerixKeys.bind(applicationContext)

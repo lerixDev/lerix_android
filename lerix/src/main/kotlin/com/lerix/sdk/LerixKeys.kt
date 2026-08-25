@@ -3,7 +3,6 @@ package com.lerix.sdk
 import android.content.Context
 import com.lerix.sdk.models.LerixPingConfig
 
-/** Holds the SDK's configuration and runtime state for the current process. */
 internal object LerixKeys {
     lateinit var appContext: Context
         private set

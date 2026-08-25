@@ -9,7 +9,6 @@ import com.lerix.sdk.models.LerixDevice
 import java.util.Locale
 import java.util.TimeZone
 
-/** Collects device/app metadata for error reports and registration calls. */
 internal object LerixDeviceInfo {
     fun collectDevice(): LerixDevice = LerixDevice(
         deviceName = "${Build.MANUFACTURER} ${Build.MODEL}",

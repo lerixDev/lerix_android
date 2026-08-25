@@ -2,7 +2,6 @@ package com.lerix.sdk.models
 
 import org.json.JSONObject
 
-/** The classification of a reported bug — matches the backend's own enum. */
 enum class BugType(val raw: String) {
     RUNTIME_ERROR("runtime_error"),
     LOGIC_BUG("logic_bug"),
@@ -24,7 +23,6 @@ enum class BugSeverity(val raw: String) {
     UNKNOWN("unknown"),
 }
 
-/** Device metadata attached to every error report. */
 data class LerixDevice(
     val deviceName: String?,
     val arc: String?,
@@ -43,7 +41,6 @@ data class LerixDevice(
     }.toString()
 }
 
-/** App metadata attached to every error report. */
 data class LerixApp(
     val name: String?,
     val packageName: String?,
@@ -58,12 +55,6 @@ data class LerixApp(
     }.toString()
 }
 
-/**
- * The `data` payload of a `/plugin/init/ping` response. `id` is the
- * backend's UUID for this app record (not the package name sent in the
- * `appid` header) — it's what `register-user`'s `projectApp` field and the
- * notifications routes' `appId` field actually reference.
- */
 data class LerixPingConfig(
     val id: String?,
     val appId: String?,

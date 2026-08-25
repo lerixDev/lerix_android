@@ -5,10 +5,6 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
-/**
- * Minimal encrypted key/value storage — the Android counterpart to the iOS
- * SDK's Keychain wrapper and the Flutter SDK's `flutter_secure_storage`.
- */
 internal object LerixSecureStorage {
     private const val FILE_NAME = "com.lerix.sdk.secure_prefs"
     private var prefs: SharedPreferences? = null
