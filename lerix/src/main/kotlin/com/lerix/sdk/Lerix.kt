@@ -16,7 +16,7 @@ object Lerix {
         context: Context,
         apiKey: String,
         projectId: String,
-        url: String = "https://api.atelerix.dev/v1",
+        url: String = "https://api.lerix.dev/v1",
         debugMode: Boolean = false,
         enableCrashReporting: Boolean = true,
         onError: ((Throwable) -> Unit)? = null,

@@ -1,7 +1,7 @@
 # Lerix (native Android / Kotlin)
 
 Native Android SDK for apps with no Flutter involved — feature parity with
-the `atelerix` Flutter plugin and the native iOS `Lerix` package:
+the `lerix` Flutter plugin and the native iOS `Lerix` package:
 app/device registration, error/crash reporting, and push notifications
 (Firebase Cloud Messaging).
 
@@ -110,7 +110,7 @@ I/O, so it's persisted to disk and reported on the *next* launch, tagged
 
 | Method | Returns | Use it for |
 |---|---|---|
-| `getRegisteredTokenId()` | Atelerix's own id for this registered device | The value for the dashboard's/REST API's device-targeting field |
+| `getRegisteredTokenId()` | Lerix's own id for this registered device | The value for the dashboard's/REST API's device-targeting field |
 | `getDeviceToken()` | The raw FCM registration token | Diagnostics, or calling FCM yourself |
 | `getDeviceId()` | `Settings.Secure.ANDROID_ID` — a local system identifier | Local diagnostics only; **not** what the dashboard's send flow expects |
 
@@ -121,8 +121,8 @@ I/O, so it's persisted to disk and reported on the *next* launch, tagged
 - For push notifications, **no `google-services.json` and no Google
   Services Gradle plugin are required** — matching the Flutter plugin's
   approach exactly. The SDK lazily creates a secondary, *named* `FirebaseApp`
-  (`LERIX_FCM_APP`, see `LerixFirebase.kt`) using Atelerix's own shared
-  Firebase project (`atelerix-44685`), with this Atelerix project's real
+  (`LERIX_FCM_APP`, see `LerixFirebase.kt`) using Lerix's own shared
+  Firebase project (`atelerix-44685`), with this Lerix project's real
   Sender ID fetched dynamically from the backend
   (`GET /plugin/notifications/sender-id`) layered in via `setGcmSenderId()`
   for delivery routing — the `projectId`/`applicationId`/`apiKey` are a
@@ -135,7 +135,7 @@ I/O, so it's persisted to disk and reported on the *next* launch, tagged
   For the backend to actually *send* to devices, upload your Firebase
   project's own **service account key** (Firebase Console → Project
   Settings → Service Accounts → Generate new private key) to the
-  **Atelerix dashboard**, under this project's **Notifications →
+  **Lerix dashboard**, under this project's **Notifications →
   Settings** — this is unrelated to the client-side setup above and is
   the only Firebase-related step a developer needs to take.
 

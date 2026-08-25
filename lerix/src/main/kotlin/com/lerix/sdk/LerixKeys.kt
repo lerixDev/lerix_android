@@ -7,7 +7,7 @@ internal object LerixKeys {
     lateinit var appContext: Context
         private set
 
-    var url: String = "https://api.atelerix.dev/v1"
+    var url: String = "https://api.lerix.dev/v1"
     var apiKey: String = ""
     var projectId: String = ""
     var debug: Boolean = false
