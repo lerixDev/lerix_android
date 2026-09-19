@@ -51,7 +51,7 @@ internal object LerixBackend {
             requestMethod = route.method
             setRequestProperty("content-type", "application/json")
             setRequestProperty("accept", "application/json")
-            setRequestProperty("atelerix-key", LerixKeys.apiKey)
+            setRequestProperty("lerix-key", LerixKeys.apiKey)
             headers.forEach { (key, value) -> setRequestProperty(key, value) }
             connectTimeout = 15_000
             readTimeout = 15_000
