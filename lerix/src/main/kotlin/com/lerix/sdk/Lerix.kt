@@ -36,6 +36,9 @@ object Lerix {
                 LerixInit.ping()
                 if (LerixInit.existingUserId() == null) {
                     LerixInit.registerUser()
+                } else {
+                    // Sends a setUser id that was queued or failed earlier.
+                    LerixInit.syncIdentityQuietly()
                 }
                 LerixCrashReporter.reportPendingCrashIfAny()
             } catch (e: Exception) {
@@ -65,6 +68,30 @@ object Lerix {
 
     suspend fun deleteUser() {
         LerixInit.deleteUser()
+    }
+
+    /**
+     * Links this install to your app's own user id. Call after login.
+     *
+     * Your backend can then target all of this user's devices with
+     * `externalUserIds` when sending notifications. If the project requires
+     * identity verification, pass [identityHash]: the hex HMAC-SHA256 of
+     * [externalId] keyed with the project's identity secret, computed on your
+     * server. Never ship the identity secret in the app.
+     *
+     * The id is stored in encrypted preferences and re-sent automatically
+     * whenever this install gets a new Lerix user id. Called before
+     * [initialize] has registered the install, it is queued and sent once
+     * registration completes. Throws if the backend rejects it (e.g. an
+     * invalid hash), like [deleteUser].
+     */
+    suspend fun setUser(externalId: String, identityHash: String? = null) {
+        LerixInit.setUser(externalId, identityHash)
+    }
+
+    /** Unlinks this install from your app's user. Call on logout. [getUserId] is kept. */
+    suspend fun clearUser() {
+        LerixInit.clearUser()
     }
 
     suspend fun reRegisterUser() {

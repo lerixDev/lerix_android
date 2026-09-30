@@ -14,6 +14,8 @@ internal data class LerixRoute(val method: String, val path: String) {
         val PING = LerixRoute("GET", "plugin/init/ping")
         val REGISTER_USER = LerixRoute("POST", "plugin/init/register-user")
         val DELETE_USER = LerixRoute("DELETE", "plugin/init/user")
+        val IDENTIFY = LerixRoute("POST", "plugin/init/identify")
+        val LOGOUT = LerixRoute("POST", "plugin/init/logout")
         val SEND_BUG = LerixRoute("POST", "plugin/bugs/create")
         val REGISTER_TOKEN = LerixRoute("POST", "plugin/notifications/register-token")
         val SENDER_ID = LerixRoute("GET", "plugin/notifications/sender-id")

@@ -27,11 +27,11 @@ Then add the dependency in `app/build.gradle.kts`:
 
 ```kotlin app/build.gradle.kts
 dependencies {
-    implementation("com.github.lerix.lerix-android:lerix:1.0.0")
+    implementation("com.github.lerix.lerix-android:lerix:1.1.0")
 }
 ```
 
-Replace `1.0.0` with the Git tag (or commit hash) you want to pin to — see
+Replace `1.1.0` with the Git tag (or commit hash) you want to pin to — see
 the [releases page](https://github.com/lerix/lerix-android/releases) for
 available versions.
 
@@ -105,6 +105,29 @@ Uncaught exceptions on any thread are reported automatically —
 `enableCrashReporting = false` to opt out). A crash can't do async network
 I/O, so it's persisted to disk and reported on the *next* launch, tagged
 `type: crash, severity: critical`.
+
+### 4. Link installs to your users
+
+Call `setUser` after login with your own user id, and `clearUser` on logout.
+Your backend can then send to all of a user's devices with `externalUserIds`.
+
+```kotlin
+lifecycleScope.launch {
+    // After login
+    runCatching { Lerix.setUser(user.id, identityHash = hashFromYourServer) }
+
+    // On logout
+    runCatching { Lerix.clearUser() }
+}
+```
+
+Both are `suspend` functions that throw if the backend rejects the call, so
+catch the error. The id is stored in encrypted preferences and re-sent
+automatically if the install is registered again; called before `initialize`
+finishes registering, it is queued. `identityHash` is only needed when the
+project requires identity verification: it is the hex HMAC-SHA256 of the user
+id keyed with the project's identity secret. Compute it on your server and
+pass it to the app; never ship the identity secret in the app.
 
 ## Device identifiers
 

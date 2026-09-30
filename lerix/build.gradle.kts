@@ -35,7 +35,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.lerix.lerix-android"
                 artifactId = "lerix"
-                version = project.findProperty("VERSION_NAME") as? String ?: "1.0.0"
+                version = project.findProperty("VERSION_NAME") as? String ?: "1.1.0"
             }
         }
     }
