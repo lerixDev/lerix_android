@@ -4,8 +4,10 @@ plugins {
     id("maven-publish")
 }
 
+// The all-in-one artifact: lerix-core + lerix-messaging, so apps on
+// `com.github.lerixDev.lerix_android:lerix:1.x` keep push without changes.
 android {
-    namespace = "com.lerix.sdk"
+    namespace = "com.lerix.sdk.all"
     compileSdk = 34
 
     defaultConfig {
@@ -22,9 +24,7 @@ android {
     }
 
     publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
+        singleVariant("release")
     }
 }
 
@@ -33,20 +33,15 @@ afterEvaluate {
         publications {
             create<MavenPublication>("release") {
                 from(components["release"])
-                groupId = "com.github.lerix.lerix-android"
+                groupId = "com.github.lerixDev.lerix_android"
                 artifactId = "lerix"
-                version = project.findProperty("VERSION_NAME") as? String ?: "1.1.0"
+                version = project.findProperty("VERSION_NAME") as? String ?: "1.5.0"
             }
         }
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.security:security-crypto:1.1.0-alpha06")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
-    // Pinned to match the Flutter plugin's own working Firebase BOM version.
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation("com.google.firebase:firebase-messaging-ktx")
+    api(project(":lerix-core"))
+    api(project(":lerix-messaging"))
 }

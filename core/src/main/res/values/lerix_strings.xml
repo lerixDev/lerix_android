@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Lerix SDK UI strings. Override any of them by defining the same name in your app. -->
+<resources>
+    <string name="lerix_next">Next</string>
+    <string name="lerix_back">Back</string>
+    <string name="lerix_close">Close</string>
+    <string name="lerix_skip">Skip</string>
+    <string name="lerix_done">Done</string>
+    <string name="lerix_cancel">Cancel</string>
+    <string name="lerix_undo">Undo</string>
+    <string name="lerix_redo">Redo</string>
+    <string name="lerix_send">Send</string>
+
+    <string name="lerix_feedback_title">Send feedback</string>
+    <string name="lerix_feedback_step">Step %1$d of %2$d</string>
+    <string name="lerix_feedback_message_title">What\'s on your mind?</string>
+    <string name="lerix_feedback_message_hint">Tell us what happened, or what we could do better</string>
+    <string name="lerix_feedback_message_count">%1$d / %2$d</string>
+    <string name="lerix_feedback_labels_title">What kind of feedback is it?</string>
+    <string name="lerix_feedback_labels_subtitle">Pick any that apply.</string>
+    <string name="lerix_feedback_screenshots_title">Add screenshots</string>
+    <string name="lerix_feedback_screenshots_subtitle">Tap a screenshot to draw on it. Use Add screenshot to capture another screen of the app.</string>
+    <string name="lerix_feedback_screenshots_empty">No screenshots yet.</string>
+    <string name="lerix_feedback_screenshots_secure">Screenshots are not available on this screen.</string>
+    <string name="lerix_feedback_add_screenshot">Add screenshot</string>
+    <string name="lerix_feedback_remove_screenshot">Remove screenshot</string>
+    <string name="lerix_feedback_capture">Capture</string>
+    <string name="lerix_feedback_capture_hint">Go to the screen you want, then tap Capture</string>
+    <string name="lerix_feedback_annotate_title">Draw on the screenshot</string>
+    <string name="lerix_feedback_pen_size">Pen size</string>
+    <string name="lerix_feedback_pen_color">Pen colour %1$d</string>
+    <string name="lerix_feedback_email_title">Your email</string>
+    <string name="lerix_feedback_email_optional">Optional. We\'ll only use it to reply to you.</string>
+    <string name="lerix_feedback_email_required">Required so we can reply to you.</string>
+    <string name="lerix_feedback_email_hint">you@example.com</string>
+    <string name="lerix_feedback_email_invalid">Enter a valid email address</string>
+    <string name="lerix_feedback_review_title">Review and send</string>
+    <string name="lerix_feedback_message_label">Message</string>
+    <string name="lerix_feedback_labels_label">Labels</string>
+    <string name="lerix_feedback_screenshots_label">Screenshots</string>
+    <string name="lerix_feedback_email_label">Email</string>
+    <string name="lerix_feedback_none">None</string>
+    <string name="lerix_feedback_show_details">Show details</string>
+    <string name="lerix_feedback_hide_details">Hide details</string>
+    <string name="lerix_feedback_details_note">This information is sent with your feedback to help fix the problem.</string>
+    <string name="lerix_feedback_detail_platform">Platform</string>
+    <string name="lerix_feedback_detail_app">App</string>
+    <string name="lerix_feedback_detail_app_version">App version</string>
+    <string name="lerix_feedback_detail_environment">Environment</string>
+    <string name="lerix_feedback_detail_device">Device</string>
+    <string name="lerix_feedback_detail_os">OS</string>
+    <string name="lerix_feedback_detail_locale">Language</string>
+    <string name="lerix_feedback_detail_timezone">Time zone</string>
+    <string name="lerix_feedback_detail_screen">Screen size</string>
+    <string name="lerix_feedback_detail_session">Session</string>
+    <string name="lerix_feedback_detail_custom">Custom data</string>
+    <string name="lerix_feedback_detail_breadcrumbs">Recent activity</string>
+    <string name="lerix_feedback_detail_breadcrumbs_count">Count: %1$d</string>
+    <string name="lerix_feedback_submit">Send feedback</string>
+    <string name="lerix_feedback_success_title">Thanks for your feedback!</string>
+    <string name="lerix_feedback_success_body">We\'ve received it and will take a look.</string>
+
+    <string name="lerix_nps_default_question">How likely are you to recommend us to a friend?</string>
+    <string name="lerix_nps_not_likely">Not likely</string>
+    <string name="lerix_nps_very_likely">Very likely</string>
+    <string name="lerix_nps_default_followup">What\'s the main reason for your score?</string>
+    <string name="lerix_nps_followup_hint">Tell us more (optional)</string>
+    <string name="lerix_nps_default_thanks">Thanks for your feedback!</string>
+    <string name="lerix_nps_score">Score %1$d</string>
+    <string name="lerix_nps_dismiss">Close survey</string>
+
+    <!-- Rating (CSAT) surveys. The dashboard's texts win; these are the fallbacks. -->
+    <string name="lerix_rating_default_question">How was your experience?</string>
+    <string name="lerix_rating_default_followup">Tell us more (optional)</string>
+    <string name="lerix_rating_default_thanks">Thanks for your feedback!</string>
+    <string name="lerix_rating_dismiss">Close survey</string>
+    <!-- TalkBack name of a numbers/emoji choice with no label: "Rating 4". -->
+    <string name="lerix_rating_choice">Rating %1$d</string>
+    <!-- TalkBack name of a star/heart: "3 of 5". -->
+    <string name="lerix_rating_icon">%1$d of %2$d</string>
+    <string name="lerix_survey_answer_hint">Your answer (optional)</string>
+
+    <!-- Release Control (maintenance screen, update screen and dialog). Server copy wins for titles/messages. -->
+    <string name="lerix_appctl_update">Update</string>
+    <string name="lerix_appctl_later">Later</string>
+    <string name="lerix_appctl_skip_version">Skip this version</string>
+    <string name="lerix_appctl_try_again">Try again</string>
+    <string name="lerix_appctl_expected_back">Expected back at %1$s</string>
+    <string name="lerix_appctl_required_title">Update required</string>
+    <string name="lerix_appctl_required_message">This version is no longer supported. Please update to continue.</string>
+    <string name="lerix_appctl_available_title">Update available</string>
+    <string name="lerix_appctl_available_message">A new version is available with improvements and fixes.</string>
+    <string name="lerix_appctl_maintenance_title">We\'ll be right back</string>
+    <string name="lerix_appctl_maintenance_message">The app is under maintenance. Please try again later.</string>
+</resources>

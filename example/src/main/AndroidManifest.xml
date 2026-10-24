@@ -5,6 +5,7 @@
         android:label="Lerix Example"
         android:icon="@android:drawable/sym_def_app_icon"
         android:theme="@android:style/Theme.Material.Light"
+        android:supportsRtl="true"
         android:name=".LerixExampleApp">
 
         <activity

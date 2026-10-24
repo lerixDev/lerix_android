@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+        <!-- Feedback flow (Lerix.feedback.show). Internal; not exported. -->
+        <activity
+            android:name=".feedback.LerixFeedbackActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden"
+            android:exported="false"
+            android:theme="@style/Lerix.Theme.Feedback"
+            android:windowSoftInputMode="adjustResize" />
+        <!-- Release Control maintenance / required-update screen. Internal; not exported. -->
+        <activity
+            android:name=".appcontrol.LerixAppControlActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden"
+            android:exported="false"
+            android:theme="@style/Lerix.Theme.AppControl" />
+    </application>
+
+</manifest>

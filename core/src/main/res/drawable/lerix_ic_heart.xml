@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Rating heart, filled (picked). Tinted in code. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:pathData="M12 20.6s-7.4-4.5-9.4-9C1.1 8.2 3.2 4.6 6.7 4.6c2 0 3.5 1 4.3 2.4.8-1.4 2.3-2.4 4.3-2.4 3.5 0 5.6 3.6 4.1 7-2 4.5-9.4 9-9.4 9z"
+        android:fillColor="#FFFFFFFF"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineJoin="round" />
+</vector>

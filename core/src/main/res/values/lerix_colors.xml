@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="lerix_background">#FFFFFFFF</color>
+    <color name="lerix_surface">#FFF4F4F5</color>
+    <color name="lerix_border">#FFE4E4E7</color>
+    <color name="lerix_text_primary">#FF18181B</color>
+    <color name="lerix_text_secondary">#FF71717A</color>
+    <color name="lerix_scrim">#66000000</color>
+    <color name="lerix_error">#FFDC2626</color>
+</resources>

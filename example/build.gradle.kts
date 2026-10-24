@@ -13,6 +13,12 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        // Point the example at another backend: ./gradlew :example:installDebug -PlerixUrl=http://10.0.2.2:3010/v1 -PlerixProjectId=... -PlerixApiKey=...
+        buildConfigField("String", "LERIX_URL", "\"${project.findProperty("lerixUrl") ?: "https://api.lerix.dev/v1"}\"")
+        buildConfigField("String", "LERIX_PROJECT_ID", "\"${project.findProperty("lerixProjectId") ?: "u2ip-111-2esw"}\"")
+        buildConfigField("String", "LERIX_API_KEY", "\"${project.findProperty("lerixApiKey") ?: "6141d7ec-6860-414e-bd5f-96a056698be5"}\"")
+        // -PlerixEnvironment=dev reaches surveys targeted to that environment. Empty: the SDK default.
+        buildConfigField("String", "LERIX_ENVIRONMENT", "\"${project.findProperty("lerixEnvironment") ?: ""}\"")
     }
 
     buildTypes {
@@ -32,6 +38,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {

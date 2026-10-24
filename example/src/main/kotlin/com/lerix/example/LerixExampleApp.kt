@@ -8,8 +8,10 @@ class LerixExampleApp : Application() {
         super.onCreate()
         Lerix.initialize(
             context = this,
-            apiKey = "6141d7ec-6860-414e-bd5f-96a056698be5",
-            projectId = "u2ip-111-2esw",
+            apiKey = BuildConfig.LERIX_API_KEY,
+            projectId = BuildConfig.LERIX_PROJECT_ID,
+            url = BuildConfig.LERIX_URL,
+            environment = BuildConfig.LERIX_ENVIRONMENT.ifEmpty { null },
             debugMode = true,
         )
     }
