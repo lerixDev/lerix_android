@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.5.0 (unreleased)
+## 1.5.0
 
 ### Changed
 - **Push is now its own artifact.** `lerix` stays the all-in-one artifact (nothing changes for apps that use it);
